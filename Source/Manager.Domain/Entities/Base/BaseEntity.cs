@@ -7,10 +7,6 @@ namespace Manager.Domain.Entities.Base
         [Key]
         public TKey Id { get; protected set; } = default!;
 
-        internal List<string> _errors = [];
-
-        public IReadOnlyCollection<string> Errors => _errors;
-
         public abstract bool Validate();
     }
 }

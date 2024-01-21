@@ -44,11 +44,12 @@ namespace Manager.Domain.Entities
 
            if (!result.IsValid)
            {    
-                var errors = result.Errors;
-                foreach (var error in errors)
-                    _errors.Add(error.ErrorMessage);
+                var errors = new List<string>();
+                
+                foreach (var error in result.Errors)
+                    errors.Add(error.ErrorMessage);
 
-                throw new DomainValidationException($"Alguns campos do usuário são invalidos");
+                throw new DomainValidationException($"Alguns campos do usuário são invalidos", errors);
            }
 
             return result.IsValid;
