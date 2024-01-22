@@ -2,11 +2,11 @@ namespace Manager.API.Token
 {
     public class TokenConfiguration(string secret, string issuer, int hoursToExpires)
     {
-        public string Secret => secret;
+        public string Secret { get; set; } = secret;
 
-        public string Issuer => issuer;
+        public string Issuer { get; set; } = issuer;
 
-        public int HoursToExpires => hoursToExpires;
+        public int HoursToExpires { get; set; } = hoursToExpires;
 
 
         public void Deconstruct(out string secret, out string issuer, out int hoursToExpires)

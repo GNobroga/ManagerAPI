@@ -12,10 +12,13 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<GlobalExceptionHandler>();
 
+#region JwtAuthentication
+
+builder.Services.Configure<TokenConfiguration>(builder.Configuration.GetSection("Jwt").Bind); 
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
         var tokenConfiguration = new TokenConfiguration("", "", 1);
-
         builder.Configuration.GetSection("Jwt").Bind(tokenConfiguration);
 
         options.TokenValidationParameters = new()
@@ -26,9 +29,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret))
         };
     });
+#endregion
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+#region ApiVersioning
 var apiVersioningBuilder = builder.Services.AddApiVersioning(options => {
     options.AssumeDefaultVersionWhenUnspecified = true;
     options.DefaultApiVersion = new ApiVersion(1, 0);
@@ -40,14 +45,15 @@ var apiVersioningBuilder = builder.Services.AddApiVersioning(options => {
     );
 });
 
+
 apiVersioningBuilder.AddApiExplorer(options => {
     options.GroupNameFormat = "'v'VVV";
     options.SubstituteApiVersionInUrl = true;
 });
 
-builder.Services.AddApplicationServices();
+#endregion
 
-builder.Services.Configure<TokenConfiguration>(builder.Configuration.GetSection("Jwt").Bind); 
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
@@ -58,6 +64,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 app.UseMiddleware<GlobalExceptionHandler>();
 

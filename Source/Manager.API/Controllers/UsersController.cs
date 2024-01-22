@@ -5,10 +5,12 @@ using Manager.Application.DTOs;
 using Manager.Application.Users.Commands;
 using Manager.Application.Users.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Manager.API.Controllers
 {   
+    [Authorize]
     [Produces(CONTENT_TYPE)]
     [Consumes(CONTENT_TYPE)]
     [ApiController]
@@ -35,6 +37,7 @@ namespace Manager.API.Controllers
             return Responses.SuccessOperation("Usuário encontrado", user);
         }
 
+        [AllowAnonymous]
         [ProducesResponseType(typeof(UserDTO), (int) HttpStatusCode.Created)]
         [ProducesResponseType((int) HttpStatusCode.BadRequest)]
         [HttpPost]
