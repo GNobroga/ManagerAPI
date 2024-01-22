@@ -5,11 +5,11 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Manager.API.Token
+namespace Manager.Application.Token
 {
     public class TokenGenerator(IOptions<TokenConfiguration> tokenConfiguration) : ITokenGenerator
     {
-        public string Generate(int userId)
+        public string Generate(string email)
         {
             var (secret, issuer, expires) = tokenConfiguration.Value;
    
@@ -18,7 +18,7 @@ namespace Manager.API.Token
             JwtSecurityToken jwtSecurityToken = new(
                 issuer: issuer,
                 expires: DateTime.Now.AddHours(expires),
-                claims: [ new Claim(JwtRegisteredClaimNames.Sub, Convert.ToString(userId)) ],
+                claims: [ new Claim(JwtRegisteredClaimNames.Sub, email) ],
                 signingCredentials: new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256)
             );
 

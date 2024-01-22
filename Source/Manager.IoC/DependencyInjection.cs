@@ -4,6 +4,7 @@ using Manager.Application.Behavior;
 using Manager.Application.DTOs;
 using Manager.Application.Interfaces;
 using Manager.Application.Mappings;
+using Manager.Application.Token;
 using Manager.Application.Users.Commands;
 using Manager.Application.Users.Handlers;
 using Manager.Application.Users.Queries;
@@ -37,9 +38,9 @@ namespace Manager.IoC
         {
             #region Services 
             services.AddScoped<IUserService, UserService>();
-            services.AddAutoMapper(options => {
-                options.AddProfile<MappingProfile>();
-            });
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddAutoMapper(options => options.AddProfile<MappingProfile>());
             #endregion
 
             #region FluentValidation
@@ -52,6 +53,7 @@ namespace Manager.IoC
             services.AddScoped<IRequestHandler<CreateUserCommand, UserDTO>, CreateUserCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateUserCommand, UserDTO>, UpdateUserCommandHandler>();
             services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserCommandHandler>();
+            services.AddScoped<IRequestHandler<LoginUserCommand, string>, LoginUserCommandHandler>();
 
             services.AddMediatR(options => {
                 options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

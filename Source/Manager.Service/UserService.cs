@@ -16,6 +16,8 @@ namespace Manager.Service
             if (userExists)
                 throw new RuleViolationException("O email informado não está disponível.");
 
+            record.Password = BCrypt.Net.BCrypt.HashPassword(record.Password);
+
             var user = mapper.Map<User>(record);
 
             return mapper.Map<UserDTO>(await userRepository.CreateAsync(user));
@@ -68,6 +70,8 @@ namespace Manager.Service
 
             if (existUserEmail != null && !string.Equals(user.Email, record.Email, StringComparison.InvariantCultureIgnoreCase))
                 throw new RuleViolationException("O e-mail já está em uso.");
+
+            record.Password = BCrypt.Net.BCrypt.HashPassword(record.Password);
             
             mapper.Map(record, user);
 

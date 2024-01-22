@@ -1,4 +1,4 @@
-namespace Manager.API.Token
+namespace Manager.Application.Token
 {
     public class TokenConfiguration(string secret, string issuer, int hoursToExpires)
     {

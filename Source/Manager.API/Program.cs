@@ -1,15 +1,16 @@
 using System.Text;
 using Asp.Versioning;
 using Manager.API.Middlewares;
-using Manager.API.Token;
+using Manager.Application.Token;
 using Manager.IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<GlobalExceptionHandler>();
 
 #region JwtAuthentication
@@ -29,6 +30,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret))
         };
     });
+#endregion
+
+#region Swagger
+
+builder.Services.AddSwaggerGen(options => {
+    options.SwaggerDoc("v1", new OpenApiInfo {
+        Title = "Manager API",
+        Description = "Uma API para gerenciar users"
+    });
+
+    options.AddSecurityDefinition(
+        name: JwtBearerDefaults.AuthenticationScheme, 
+        securityScheme: new()
+        {
+            Description = "Entre com um token para ter acesso: Bearer [Token]",
+            Type = SecuritySchemeType.ApiKey,
+            In = ParameterLocation.Header,
+            Name = "X-API-Key"
+        }
+    );
+});
+
 #endregion
 
 builder.Services.AddInfrastructure(builder.Configuration);

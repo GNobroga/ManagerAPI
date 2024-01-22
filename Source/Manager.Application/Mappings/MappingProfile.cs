@@ -13,9 +13,9 @@ namespace Manager.Application.Mappings
                 .AfterMap((user, userDTO) => userDTO.Password = null)
                 .ReverseMap();
 
-
             CreateMap<CreateUserCommand, UserDTO>();
             CreateMap<UpdateUserCommand, UserDTO>();
+            CreateMap<LoginUserCommand, UserDTO>();
         }
     }
 }
