@@ -8,7 +8,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddApplicationServices();
 
 var apiVersioningBuilder = builder.Services.AddApiVersioning(options => {
     options.AssumeDefaultVersionWhenUnspecified = true;
@@ -25,6 +24,8 @@ apiVersioningBuilder.AddApiExplorer(options => {
     options.GroupNameFormat = "'v'VVV";
     options.SubstituteApiVersionInUrl = true;
 });
+
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 

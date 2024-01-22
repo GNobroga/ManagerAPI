@@ -3,6 +3,9 @@ using Manager.Application.Behavior;
 using Manager.Application.DTOs;
 using Manager.Application.Interfaces;
 using Manager.Application.Mappings;
+using Manager.Application.Users.Commands;
+using Manager.Application.Users.Handlers;
+using Manager.Application.Users.Queries;
 using Manager.Domain.Entities;
 using Manager.Domain.Interfaces;
 using Manager.Infrastructure.Context;
@@ -32,10 +35,17 @@ namespace Manager.IoC
 
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            // Service
             services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper(options => {
                 options.AddProfile<MappingProfile>();
             });
+
+            // Mediator
+
+            services.AddTransient<IRequestHandler<GetAllUsersQuery, List<UserDTO>>, GetAllUsersHandler>();
+            services.AddTransient<IRequestHandler<CreateUserCommand, UserDTO>, CreateUserHandler>();
+
             services.AddMediatR(options => {
                 options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
                 options.RegisterServicesFromAssembly(Assembly.Load("Manager.API"));
