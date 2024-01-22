@@ -31,8 +31,7 @@ namespace Manager.API.Middlewares
             catch 
             {   
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                
-                 await context.Response.WriteAsJsonAsync(
+                await context.Response.WriteAsJsonAsync(
                     new Responses.Result()
                 );
             }

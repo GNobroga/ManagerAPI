@@ -43,7 +43,6 @@ namespace Manager.IoC
             #endregion
 
             #region FluentValidation
-            // Fluent Validation
             services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
             #endregion
@@ -52,6 +51,7 @@ namespace Manager.IoC
             services.AddScoped<IRequestHandler<GetAllUsersQuery, List<UserDTO>>, GetAllUsersQueryHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, UserDTO>, CreateUserCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateUserCommand, UserDTO>, UpdateUserCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteUserCommand, bool>, DeleteUserCommandHandler>();
 
             services.AddMediatR(options => {
                 options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

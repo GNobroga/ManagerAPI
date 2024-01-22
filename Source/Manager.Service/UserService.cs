@@ -35,12 +35,13 @@ namespace Manager.Service
 
         public async Task<UserDTO> FindByIdAsync(int id)
         {
-            var user = await userRepository.GetAsync(id) ?? throw new RuleViolationException("O usuário não existe.");
+            var user = await GetUserOrThrowException(id);
             return mapper.Map<UserDTO>(user);
         }
 
         public async Task<bool> RemoveAsync(int id)
         {
+            await GetUserOrThrowException(id);
             return await userRepository.RemoveAsync(id);
         }
 
@@ -61,7 +62,7 @@ namespace Manager.Service
             if (id != record.Id)
                  throw new RuleViolationException("Id do usuário é diferente do passado na rota.");
             
-            var user = await userRepository.GetAsync(id) ?? throw new RuleViolationException("O usuário não existe.");
+            var user = await GetUserOrThrowException(id);
 
             var existUserEmail = await userRepository.FindByEmail(record.Email);
 
@@ -73,6 +74,11 @@ namespace Manager.Service
             await userRepository.UpdateAsync(user);
 
             return mapper.Map<UserDTO>(user);
+        }
+
+        private async Task<User> GetUserOrThrowException(int id)
+        {
+            return await userRepository.GetAsync(id) ?? throw new RuleViolationException("O usuário não existe.");
         }
     }
 }
