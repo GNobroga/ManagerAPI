@@ -1,13 +1,14 @@
 using Asp.Versioning;
+using Manager.API.Middlewares;
 using Manager.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<GlobalExceptionHandler>();
 
 builder.Services.AddInfrastructure(builder.Configuration);
-
 
 var apiVersioningBuilder = builder.Services.AddApiVersioning(options => {
     options.AssumeDefaultVersionWhenUnspecified = true;
@@ -37,6 +38,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.MapControllers();
+app.UseMiddleware<GlobalExceptionHandler>();
 
 app.Run();
 

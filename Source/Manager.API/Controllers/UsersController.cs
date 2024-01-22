@@ -1,5 +1,6 @@
 using System.Net;
 using Asp.Versioning;
+using Manager.API.Utilities;
 using Manager.Application.DTOs;
 using Manager.Application.Interfaces;
 using Manager.Application.Users.Commands;
@@ -21,17 +22,19 @@ namespace Manager.API.Controllers
 
         [ProducesResponseType(typeof(List<UserDTO>), (int) HttpStatusCode.OK)]
         [HttpGet]
-        public async Task<ActionResult<List<UserDTO>>> Get()
+        public async Task<ActionResult<Responses.Result>> Get()
         {   
-            return await mediator.Send(new GetAllUsersQuery());
+            var users = await mediator.Send(new GetAllUsersQuery());
+            return Responses.SuccessOperation("Usuários", users);
         }
 
         [ProducesResponseType(typeof(UserDTO), (int) HttpStatusCode.OK)]
         [ProducesResponseType((int) HttpStatusCode.BadRequest)]
         [HttpGet("{id:int}", Name = "GetById")]
-        public async Task<ActionResult<UserDTO>> Get(int id)
+        public async Task<ActionResult<Responses.Result>> Get(int id)
         {
-            return await mediator.Send(new GetUserByIdQuery(id));
+            var user = await mediator.Send(new GetUserByIdQuery(id));
+            return Responses.SuccessOperation("Usuário encontrado", user);
         }
 
         [ProducesResponseType(typeof(UserDTO), (int) HttpStatusCode.Created)]
