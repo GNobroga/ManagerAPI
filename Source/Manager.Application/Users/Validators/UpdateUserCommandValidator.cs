@@ -1,12 +1,15 @@
 using FluentValidation;
 using Manager.Application.Users.Commands;
 
-namespace Manager.Application.Users.Validations
+namespace Manager.Application.Users.Validators
 {
-    public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+    public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
     {
-        public CreateUserCommandValidator()
+        public UpdateUserCommandValidator()
         {
+            RuleFor(x => x.Id)
+                .NotNull().WithMessage("O Id não pode ser nulo");
+
             RuleFor(x => x.Email)
                 .EmailAddress().WithMessage("O e-mail não é válido.");
             

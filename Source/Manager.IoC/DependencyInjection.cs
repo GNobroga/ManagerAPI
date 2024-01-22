@@ -7,8 +7,6 @@ using Manager.Application.Mappings;
 using Manager.Application.Users.Commands;
 using Manager.Application.Users.Handlers;
 using Manager.Application.Users.Queries;
-using Manager.Application.Users.Validations;
-using Manager.Domain.Entities;
 using Manager.Domain.Interfaces;
 using Manager.Infrastructure.Context;
 using Manager.Infrastructure.Repositories;
@@ -53,6 +51,7 @@ namespace Manager.IoC
             #region Mediator
             services.AddScoped<IRequestHandler<GetAllUsersQuery, List<UserDTO>>, GetAllUsersQueryHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, UserDTO>, CreateUserCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateUserCommand, UserDTO>, UpdateUserCommandHandler>();
 
             services.AddMediatR(options => {
                 options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

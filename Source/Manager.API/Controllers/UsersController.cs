@@ -2,7 +2,6 @@ using System.Net;
 using Asp.Versioning;
 using Manager.API.Utilities;
 using Manager.Application.DTOs;
-using Manager.Application.Interfaces;
 using Manager.Application.Users.Commands;
 using Manager.Application.Users.Queries;
 using MediatR;
@@ -44,5 +43,27 @@ namespace Manager.API.Controllers
             var user = await mediator.Send(createUserCommand);
             return CreatedAtRoute("GetById", new { Id = user.Id }, user);
         }
+
+        [ProducesResponseType(typeof(UserDTO), (int) HttpStatusCode.OK)]
+        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<Responses.Result>> Delete(int id)
+        {   
+            var deleted = await mediator.Send(new DeleteUserCommand(id));
+            return Responses.SuccessOperation(deleted ? "Usuário deletado" : "Usuário não foi deletado", deleted);
+        }
+
+        [ProducesResponseType(typeof(UserDTO), (int) HttpStatusCode.OK)]
+        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<Responses.Result>> Update(int id, UpdateUserCommand updateUserCommand)
+        {   
+            updateUserCommand.Id = id;
+            var user = await mediator.Send(updateUserCommand);
+            return Responses.SuccessOperation("Usuário atualizado", user);
+        }
+
+
+
     }
 }

@@ -1,4 +1,5 @@
 
+using System.Net;
 using System.Reflection.Metadata;
 using FluentValidation;
 using Manager.API.Utilities;
@@ -28,7 +29,9 @@ namespace Manager.API.Middlewares
                 await ExceptionHandler(context, exception.Message, null);
             }
             catch 
-            {
+            {   
+                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                
                  await context.Response.WriteAsJsonAsync(
                     new Responses.Result()
                 );
@@ -36,8 +39,10 @@ namespace Manager.API.Middlewares
         }
 
         private async static Task ExceptionHandler(HttpContext context, string message, IEnumerable<string>? errors)
-        {
-             await context.Response.WriteAsJsonAsync(
+        {   
+            context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+
+            await context.Response.WriteAsJsonAsync(
                 Responses.DomainErrorMessage(message, errors!)
             );
         } 

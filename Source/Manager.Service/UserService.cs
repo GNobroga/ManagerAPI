@@ -57,8 +57,16 @@ namespace Manager.Service
         }
 
         public async Task<UserDTO> UpdateAsync(int id, UserDTO record)
-        {
+        {   
+            if (id != record.Id)
+                 throw new RuleViolationException("Id do usuário é diferente do passado na rota.");
+            
             var user = await userRepository.GetAsync(id) ?? throw new RuleViolationException("O usuário não existe.");
+
+            var existUserEmail = await userRepository.FindByEmail(record.Email);
+
+            if (existUserEmail != null && !string.Equals(user.Email, record.Email, StringComparison.InvariantCultureIgnoreCase))
+                throw new RuleViolationException("O e-mail já está em uso.");
             
             mapper.Map(record, user);
 

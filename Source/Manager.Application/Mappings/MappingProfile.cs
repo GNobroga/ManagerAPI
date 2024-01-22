@@ -15,6 +15,7 @@ namespace Manager.Application.Mappings
 
 
             CreateMap<CreateUserCommand, UserDTO>();
+            CreateMap<UpdateUserCommand, UserDTO>();
         }
     }
 }
