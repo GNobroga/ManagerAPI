@@ -1,9 +1,32 @@
 
+using System.Text.Json.Serialization;
+
 namespace Manager.Application.DTOs
 {
-    public record UserDTO(int Id, string Name, string Email, string Password)
+    public sealed class UserDTO
     {
-        public UserDTO() : this(default, default!, default!, default!)
-        {}
-    };
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Email { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? Password { get; set;}
+
+        public UserDTO(string name, string email, string password) {
+            Name = name;
+            Email = email;
+            
+            Password = password;
+        }
+
+        public UserDTO(int id, string name, string email, string password)
+        {
+            Id = id;
+            Name = name;
+            Email = email;
+            Password = password;
+        }
+    }
 }
