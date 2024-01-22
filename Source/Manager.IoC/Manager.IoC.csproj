@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Manager.Infrastructure\Manager.Infrastructure.csproj"/>
     <ProjectReference Include="..\Manager.Application\Manager.Application.csproj"/>
+    <ProjectReference Include="..\Manager.Service\Manager.Service.csproj"/>
   </ItemGroup>
 
 </Project>

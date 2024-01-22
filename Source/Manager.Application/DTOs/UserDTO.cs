@@ -8,8 +8,6 @@ namespace Manager.Application.DTOs
         public string Email { get; init; }
  
         public string Password { get; init; }
-
-        public UserDTO() {}
     
         public UserDTO(int id, string name, string email, string password) {
             Id = id;

@@ -9,6 +9,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddEntityMapper();
 
+builder.Services.AddServices();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -17,6 +19,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
 app.MapControllers();
 
 app.Run();

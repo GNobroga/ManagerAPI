@@ -1,9 +1,11 @@
 using Manager.Application.DTOs;
+using Manager.Application.Interfaces;
 using Manager.Application.Mappings;
 using Manager.Domain.Entities;
 using Manager.Domain.Interfaces;
 using Manager.Infrastructure.Context;
 using Manager.Infrastructure.Repositories;
+using Manager.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,12 @@ namespace Manager.IoC
         public static IServiceCollection AddEntityMapper(this IServiceCollection services)
         {
             services.AddScoped<IEntityMapper<User, UserDTO>, Mapper<User, UserDTO>>();
+            return services;
+        }
+
+        public static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddScoped<IUserService, UserService>();
             return services;
         }
 
