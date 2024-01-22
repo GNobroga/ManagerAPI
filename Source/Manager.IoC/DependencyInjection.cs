@@ -1,3 +1,5 @@
+using System.Reflection;
+using Manager.Application.Behavior;
 using Manager.Application.DTOs;
 using Manager.Application.Interfaces;
 using Manager.Application.Mappings;
@@ -6,10 +8,10 @@ using Manager.Domain.Interfaces;
 using Manager.Infrastructure.Context;
 using Manager.Infrastructure.Repositories;
 using Manager.Service;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SQLitePCL;
 
 namespace Manager.IoC
 {
@@ -33,6 +35,10 @@ namespace Manager.IoC
             services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper(options => {
                 options.AddProfile<MappingProfile>();
+            });
+            services.AddMediatR(options => {
+                options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+                options.RegisterServicesFromAssembly(Assembly.Load("Manager.API"));
             });
             return services;
         }

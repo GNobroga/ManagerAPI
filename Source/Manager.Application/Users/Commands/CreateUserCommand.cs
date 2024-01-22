@@ -1,10 +1,14 @@
 using Manager.Application.DTOs;
-using Manager.Application.Users.Commands.Base;
+using MediatR;
 
 namespace Manager.Application.Users.Commands
 {
-    public class CreateUserCommand(UserDTO userDTO) : BaseUserCommand(userDTO)
+    public class CreateUserCommand(string email, string password, string confirmationPassword) : IRequest<UserDTO>
     {
+        public string Email => email;
 
+        public string Password => password;
+
+        public string ConfirmationPassword => confirmationPassword;
     }
 }
