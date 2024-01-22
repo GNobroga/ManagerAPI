@@ -9,6 +9,7 @@ using Manager.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SQLitePCL;
 
 namespace Manager.IoC
 {
@@ -26,15 +27,13 @@ namespace Manager.IoC
             return services;
         }
 
-        public static IServiceCollection AddEntityMapper(this IServiceCollection services)
-        {
-            services.AddScoped<IEntityMapper<User, UserDTO>, Mapper<User, UserDTO>>();
-            return services;
-        }
 
-        public static IServiceCollection AddServices(this IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddAutoMapper(options => {
+                options.AddProfile<MappingProfile>();
+            });
             return services;
         }
 

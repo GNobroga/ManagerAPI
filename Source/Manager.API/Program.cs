@@ -7,9 +7,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddEntityMapper();
-
-builder.Services.AddServices();
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
