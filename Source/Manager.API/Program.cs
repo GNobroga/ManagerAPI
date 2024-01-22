@@ -1,12 +1,31 @@
+using System.Text;
 using Asp.Versioning;
 using Manager.API.Middlewares;
+using Manager.API.Token;
 using Manager.IoC;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<GlobalExceptionHandler>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options => {
+        var tokenConfiguration = new TokenConfiguration("", "", 1);
+
+        builder.Configuration.GetSection("Jwt").Bind(tokenConfiguration);
+
+        options.TokenValidationParameters = new()
+        {   
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidIssuer = tokenConfiguration.Issuer,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret))
+        };
+    });
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -27,6 +46,8 @@ apiVersioningBuilder.AddApiExplorer(options => {
 });
 
 builder.Services.AddApplicationServices();
+
+builder.Services.Configure<TokenConfiguration>(builder.Configuration.GetSection("Jwt").Bind); 
 
 var app = builder.Build();
 
