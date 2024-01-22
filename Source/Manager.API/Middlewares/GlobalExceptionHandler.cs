@@ -17,11 +17,11 @@ namespace Manager.API.Middlewares
             } 
             catch (DomainValidationException exception)
             {
-                await ExceptionHandler(context, exception.Message, exception.Errors);
+                await ExceptionHandler(context, "Usuário inválido", exception.Errors);
             }
             catch (ValidationException exception)
             {
-                await ExceptionHandler(context, exception.Message, exception.Errors.Select(x => x.ErrorMessage));
+                await ExceptionHandler(context, "Erro de validação", exception.Errors.Select(x => x.ErrorMessage));
             }
             catch (RuleViolationException exception)
             {

@@ -37,16 +37,20 @@ namespace Manager.IoC
 
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            // Service
+            #region Services 
             services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper(options => {
                 options.AddProfile<MappingProfile>();
             });
+            #endregion
 
+            #region FluentValidation
             // Fluent Validation
             services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
-            // Mediator
+            #endregion
+
+            #region Mediator
             services.AddScoped<IRequestHandler<GetAllUsersQuery, List<UserDTO>>, GetAllUsersQueryHandler>();
             services.AddScoped<IRequestHandler<CreateUserCommand, UserDTO>, CreateUserCommandHandler>();
 
@@ -54,6 +58,7 @@ namespace Manager.IoC
                 options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
                 options.RegisterServicesFromAssembly(Assembly.Load("Manager.API"));
             });
+            #endregion
             return services;
         }
 

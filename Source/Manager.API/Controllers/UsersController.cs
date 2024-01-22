@@ -17,7 +17,6 @@ namespace Manager.API.Controllers
     [Route("/api/v{version:apiVersion}/users")]
     public class UsersController(IMediator mediator) : ControllerBase
     {
-
         private const string CONTENT_TYPE = "application/json";
 
         [ProducesResponseType(typeof(List<UserDTO>), (int) HttpStatusCode.OK)]
