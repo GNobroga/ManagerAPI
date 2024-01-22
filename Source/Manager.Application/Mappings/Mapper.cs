@@ -8,10 +8,10 @@ namespace Manager.Application.Mappings
         {
             ArgumentNullException.ThrowIfNull(entity);
 
-            Type destType = typeof(TDestination);
+            Type type = typeof(TDestination);
             TDestination destination = Activator.CreateInstance<TDestination>();
 
-            foreach (var property in destType.GetProperties())
+            foreach (var property in type.GetProperties())
             {
                 var sourceProperty = entity.GetType().GetProperty(property.Name);
 
@@ -33,10 +33,10 @@ namespace Manager.Application.Mappings
         {
              ArgumentNullException.ThrowIfNull(destination);
 
-            Type destType = typeof(TDestination);
+            Type type = typeof(TDestination);
             TSource source = Activator.CreateInstance<TSource>();
 
-            foreach (var property in destType.GetProperties())
+            foreach (var property in type.GetProperties())
             {
                 var sourceProperty = destination.GetType().GetProperty(property.Name);
 
