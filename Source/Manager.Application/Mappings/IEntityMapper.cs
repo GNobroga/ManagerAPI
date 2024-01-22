@@ -8,6 +8,8 @@ namespace Manager.Application.Mappings
 
         TEntity MapToEntity(TDestination destination);
 
+        TEntity Map(TDestination destination, TEntity source);
+
         List<TDestination> MapToDestination(List<TEntity> entities);
     }
 }

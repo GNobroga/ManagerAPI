@@ -1,51 +1,70 @@
 using Manager.Application.DTOs;
 using Manager.Application.Interfaces;
+using Manager.Application.Mappings;
+using Manager.Domain.Entities;
 using Manager.Domain.Interfaces;
 using Manager.Service.Exceptions;
 
 namespace Manager.Service
 {
-    public class UserService(IUserRepository userRepository) : IUserService
+    public class UserService(IUserRepository userRepository, IEntityMapper<User, UserDTO> entityMapper) : IUserService
     {
         public async Task<UserDTO> CreateAsync(UserDTO record)
         {
-         
-            throw new NotImplementedException();
+            var userExists = (await userRepository.FindByEmail(record.Email)) is not null;
+
+            if (userExists)
+                throw new RuleViolationException("O email informado não está disponível.");
+
+            var user = entityMapper.MapToEntity(record);
+
+            return entityMapper.MapToDestination(await userRepository.CreateAsync(user));
         }
 
-        public Task<List<UserDTO>> FindAllAsync()
+        public async Task<List<UserDTO>> FindAllAsync()
         {
-            throw new NotImplementedException();
+            var users = await userRepository.GetAsync();
+            return entityMapper.MapToDestination(users);
         }
 
-        public Task<UserDTO> FindByEmailAsync(string name)
+        public async Task<UserDTO> FindByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            var user = await userRepository.FindByEmail(email) ?? throw new RuleViolationException("O email não existe.");
+            return entityMapper.MapToDestination(user);
         }
 
-        public Task<UserDTO> FindByIdAsync(int id)
+        public async Task<UserDTO> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var user = await userRepository.GetAsync(id) ?? throw new RuleViolationException("O usuário não existe.");
+            return entityMapper.MapToDestination(user);
         }
 
-        public Task<bool> RemoveAsync(int id)
+        public async Task<bool> RemoveAsync(int id)
         {
-            throw new NotImplementedException();
+            return await userRepository.RemoveAsync(id);
         }
 
-        public Task<List<UserDTO>> SearchByEmailAsync(string email)
+        public async Task<List<UserDTO>> SearchByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            var users = await userRepository.SearchByNameAsync(email);
+            return entityMapper.MapToDestination(users);
         }
 
-        public Task<List<UserDTO>> SearchByNameAsync(string name)
+        public async Task<List<UserDTO>> SearchByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            var users = await userRepository.SearchByNameAsync(name);
+            return entityMapper.MapToDestination(users);
         }
 
-        public Task<UserDTO> UpdateAsync(int id, UserDTO record)
+        public async Task<UserDTO> UpdateAsync(int id, UserDTO record)
         {
-            throw new NotImplementedException();
+            var user = await userRepository.GetAsync(id) ?? throw new RuleViolationException("O usuário não existe.");
+            
+            entityMapper.Map(record, user);
+
+            await userRepository.UpdateAsync(user);
+
+            return entityMapper.MapToDestination(user);
         }
     }
 }

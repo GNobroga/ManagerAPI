@@ -1,3 +1,6 @@
+using Manager.Application.DTOs;
+using Manager.Application.Mappings;
+using Manager.Domain.Entities;
 using Manager.Domain.Interfaces;
 using Manager.Infrastructure.Context;
 using Manager.Infrastructure.Repositories;
@@ -20,5 +23,12 @@ namespace Manager.IoC
             services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
+
+        public static IServiceCollection AddEntityMapper(this IServiceCollection services)
+        {
+            services.AddScoped<IEntityMapper<User, UserDTO>, Mapper<User, UserDTO>>();
+            return services;
+        }
+
     }
 }
