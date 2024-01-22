@@ -9,8 +9,7 @@ namespace Manager.Application.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<User, UserDTO>().ReverseMap()
-                .ForMember(x => x.Password, y => y.Ignore());
+            CreateMap<User, UserDTO>().ForMember(x => x.Password, y => y.Ignore()).ReverseMap();
 
             CreateMap<CreateUserCommand, UserDTO>();
         }

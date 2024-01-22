@@ -1,5 +1,9 @@
 
 namespace Manager.Application.DTOs
 {
-    public record UserDTO(int Id, string Name, string Email, string Password);
+    public record UserDTO(int Id, string Name, string Email, string Password)
+    {
+        public UserDTO() : this(default, default!, default!, default!)
+        {}
+    };
 }

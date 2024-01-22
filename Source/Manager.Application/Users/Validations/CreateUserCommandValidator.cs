@@ -14,7 +14,7 @@ namespace Manager.Application.Users.Validations
                 .MinimumLength(3).WithMessage("A senha precisa ter no mínimo 3 caracteres")
                 .MaximumLength(100).WithMessage("A senha pode ter no máximo 100 caracteres");
             
-            RuleFor(x => x.ConfirmationPassword)
+            RuleFor(x => x.Password)
                 .Equal(y => y.ConfirmationPassword).WithMessage("A senha de confirmação não bate com a senha.");
         }
     }

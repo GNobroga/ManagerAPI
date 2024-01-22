@@ -1,4 +1,5 @@
 using System.Reflection;
+using FluentValidation;
 using Manager.Application.Behavior;
 using Manager.Application.DTOs;
 using Manager.Application.Interfaces;
@@ -6,6 +7,7 @@ using Manager.Application.Mappings;
 using Manager.Application.Users.Commands;
 using Manager.Application.Users.Handlers;
 using Manager.Application.Users.Queries;
+using Manager.Application.Users.Validations;
 using Manager.Domain.Entities;
 using Manager.Domain.Interfaces;
 using Manager.Infrastructure.Context;
@@ -41,10 +43,12 @@ namespace Manager.IoC
                 options.AddProfile<MappingProfile>();
             });
 
-            // Mediator
+            // Fluent Validation
+            services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddTransient<IRequestHandler<GetAllUsersQuery, List<UserDTO>>, GetAllUsersHandler>();
-            services.AddTransient<IRequestHandler<CreateUserCommand, UserDTO>, CreateUserHandler>();
+            // Mediator
+            services.AddScoped<IRequestHandler<GetAllUsersQuery, List<UserDTO>>, GetAllUsersHandler>();
+            services.AddScoped<IRequestHandler<CreateUserCommand, UserDTO>, CreateUserHandler>();
 
             services.AddMediatR(options => {
                 options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

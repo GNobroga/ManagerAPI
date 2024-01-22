@@ -12,8 +12,9 @@ namespace Manager.Application.Behavior
             {
                 var context = new ValidationContext<TRequest>(request);
                 var results = await Task.WhenAll(validators.Select(x => x.ValidateAsync(context)));
-                var failures = results.SelectMany(x => x.Errors).Where(x => x is not null).ToList();
-                if (failures.Count > 0) 
+                var failures = results.SelectMany(x => x.Errors).Where(x => x != null).ToList();
+
+                if (failures.Count != 0) 
                     throw new ValidationException(failures);
             }
             
