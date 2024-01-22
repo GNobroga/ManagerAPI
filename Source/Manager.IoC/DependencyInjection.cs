@@ -47,8 +47,8 @@ namespace Manager.IoC
             services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
             // Mediator
-            services.AddScoped<IRequestHandler<GetAllUsersQuery, List<UserDTO>>, GetAllUsersHandler>();
-            services.AddScoped<IRequestHandler<CreateUserCommand, UserDTO>, CreateUserHandler>();
+            services.AddScoped<IRequestHandler<GetAllUsersQuery, List<UserDTO>>, GetAllUsersQueryHandler>();
+            services.AddScoped<IRequestHandler<CreateUserCommand, UserDTO>, CreateUserCommandHandler>();
 
             services.AddMediatR(options => {
                 options.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

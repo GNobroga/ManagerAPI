@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Manager.Application.Users.Handlers
 {
-    public class CreateUserHandler(IUserService userService, IMapper mapper) : IRequestHandler<CreateUserCommand, UserDTO>
+    public class CreateUserCommandHandler(IUserService userService, IMapper mapper) : IRequestHandler<CreateUserCommand, UserDTO>
     {
         public Task<UserDTO> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
