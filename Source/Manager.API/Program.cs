@@ -19,13 +19,13 @@ builder.Services.Configure<TokenConfiguration>(builder.Configuration.GetSection(
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
         var tokenConfiguration = new TokenConfiguration();
-        builder.Configuration.GetSection("Jwt").Bind(tokenConfiguration);
         options.TokenValidationParameters = new()
         {   
             ValidateAudience = false,
+            ValidateActor = false,
             ValidateLifetime = true,
-            ValidIssuer = tokenConfiguration.Issuer,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.Secret))
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!))
         };
     });
 #endregion

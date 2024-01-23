@@ -19,7 +19,7 @@ namespace Manager.API.Controllers
         public async Task<IActionResult> Post(LoginUserCommand loginUserCommand)
         {
             var token = await mediator.Send(loginUserCommand);
-            return OkOrNoContent(token);
+            return OkOrNoContent(new { token });
         }
     }
 }

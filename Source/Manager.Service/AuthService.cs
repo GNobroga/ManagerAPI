@@ -13,10 +13,19 @@ namespace Manager.Service
 
             if (user is null)
             {
-                smartNotification.NewNotificationConflict("Usuário não está cadastrado.");
+                smartNotification.NewNotificationConflict("Usuário ou senha inválidos.");
                 return default!;
             }
-            return BCrypt.Net.BCrypt.Verify(record.Password, user.Password);
+
+            var result = BCrypt.Net.BCrypt.Verify(record.Password, user.Password);
+
+            if (!result) 
+            {
+                smartNotification.NewNotificationConflict("Usuário ou senha inválidos.");
+                return default!;
+            }
+            
+            return true;
         }
     }
 }

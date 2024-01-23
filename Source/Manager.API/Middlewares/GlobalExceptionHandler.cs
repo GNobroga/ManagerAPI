@@ -21,8 +21,9 @@ namespace Manager.API.Middlewares
             {
                 await ExceptionHandler(context, "Erro de validação", exception.Errors.Select(x => x.ErrorMessage));
             }
-            catch 
+            catch (Exception ex)
             {   
+                Console.WriteLine(ex.Message);
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsJsonAsync(
                     new Responses.Result()
