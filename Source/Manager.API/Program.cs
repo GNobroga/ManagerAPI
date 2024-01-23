@@ -48,6 +48,20 @@ builder.Services.AddSwaggerGen(options => {
             Name = "X-API-Key"
         }
     );
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement() {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
+            },
+            []
+        }
+    });
 });
 
 #endregion
