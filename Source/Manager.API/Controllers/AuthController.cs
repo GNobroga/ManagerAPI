@@ -1,4 +1,5 @@
 
+using System.Net;
 using Asp.Versioning;
 using Manager.Application.Users.Commands;
 using MediatR;
@@ -11,7 +12,7 @@ namespace Manager.API.Controllers
     [Route("api/v{version=apiVersion}/[controller]")]
     public class AuthController(IMediator mediator) : ControllerBase
     {
-
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.OK)]
         [HttpPost]
         public async Task<ActionResult<string>> Post(LoginUserCommand loginUserCommand)
         {

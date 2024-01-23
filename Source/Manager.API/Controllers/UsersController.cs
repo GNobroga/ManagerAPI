@@ -6,7 +6,6 @@ using Manager.Application.Users.Commands;
 using Manager.Application.Users.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Manager.API.Controllers

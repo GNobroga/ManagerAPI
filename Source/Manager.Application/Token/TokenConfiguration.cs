@@ -1,14 +1,20 @@
 namespace Manager.Application.Token
 {
-    public class TokenConfiguration(string secret, string issuer, int hoursToExpires)
+    public class TokenConfiguration
     {
-        public string Secret { get; set; } = secret;
+        public string Secret { get; set; } = default!;
+        public string Issuer { get; set; } = default!;
 
-        public string Issuer { get; set; } = issuer;
+        public int HoursToExpires { get; set; } 
 
-        public int HoursToExpires { get; set; } = hoursToExpires;
+        public TokenConfiguration() {}
 
-
+        public TokenConfiguration(string secret, string issuer, int hoursToExpires)
+        {
+            Secret = secret;
+            Issuer = issuer;
+            HoursToExpires = hoursToExpires;
+        }
         public void Deconstruct(out string secret, out string issuer, out int hoursToExpires)
         {
             secret = Secret;

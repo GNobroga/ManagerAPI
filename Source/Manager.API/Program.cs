@@ -1,10 +1,10 @@
+using System.Reflection;
 using System.Text;
 using Asp.Versioning;
 using Manager.API.Middlewares;
 using Manager.Application.Token;
 using Manager.IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -19,7 +19,7 @@ builder.Services.Configure<TokenConfiguration>(builder.Configuration.GetSection(
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
-        var tokenConfiguration = new TokenConfiguration("", "", 1);
+        var tokenConfiguration = new TokenConfiguration();
         builder.Configuration.GetSection("Jwt").Bind(tokenConfiguration);
 
         options.TokenValidationParameters = new()
