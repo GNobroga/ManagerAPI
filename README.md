@@ -17,3 +17,5 @@ Uma API simples pra gerenciar usuários
 - Notification
 
 - Fluent Validation
+
+- User Secrets

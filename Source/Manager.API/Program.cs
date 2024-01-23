@@ -14,7 +14,11 @@ builder.Services.AddScoped<GlobalExceptionHandler>();
 
 #region JwtAuthentication
 
-builder.Services.Configure<TokenConfiguration>(builder.Configuration.GetSection("Jwt").Bind); 
+builder.Services.Configure<TokenConfiguration>(tokenConfiguration => {
+    tokenConfiguration.Issuer = builder.Configuration["Jwt:Issuer"]!;
+    tokenConfiguration.Secret = builder.Configuration["Jwt:Secret"]!;
+    tokenConfiguration.HoursToExpires = Convert.ToInt32(builder.Configuration["Jwt:HoursToExpire"]!);
+}); 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
