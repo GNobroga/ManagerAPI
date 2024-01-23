@@ -3,18 +3,22 @@ using Manager.Application.DTOs;
 using Manager.Application.Interfaces;
 using Manager.Domain.Entities;
 using Manager.Domain.Interfaces;
-using Manager.Service.Exceptions;
+
+using Marraia.Notifications.Interfaces;
 
 namespace Manager.Service
 {
-    public class UserService(IUserRepository userRepository, IMapper mapper) : IUserService
+    public class UserService(IUserRepository userRepository, IMapper mapper, ISmartNotification smartNotification) : IUserService
     {
         public async Task<UserDTO> CreateAsync(UserDTO record)
         {
             var userExists = (await userRepository.FindByEmail(record.Email)) is not null;
 
             if (userExists)
-                throw new RuleViolationException("O email informado não está disponível.");
+            {
+                smartNotification.NewNotificationConflict("O email informado não está disponível.");
+                return default!;
+            }
 
             record.Password = BCrypt.Net.BCrypt.HashPassword(record.Password);
 
@@ -31,7 +35,13 @@ namespace Manager.Service
 
         public async Task<UserDTO> FindByEmailAsync(string email)
         {
-            var user = await userRepository.FindByEmail(email) ?? throw new RuleViolationException("O email não existe.");
+            var user = await userRepository.FindByEmail(email);
+
+            if (user is null)
+            {
+                smartNotification.NewNotificationConflict("Não foi encontrado usuário com o email especificado.");
+                return default!;
+            }
             return mapper.Map<UserDTO>(user);
         }
 
@@ -62,14 +72,26 @@ namespace Manager.Service
         public async Task<UserDTO> UpdateAsync(int id, UserDTO record)
         {   
             if (id != record.Id)
-                 throw new RuleViolationException("Id do usuário é diferente do passado na rota.");
-            
+            {
+                smartNotification.NewNotificationConflict("O Id passado na rota não bate com o id do objeto passado");
+                return default!;
+            }
+
             var user = await GetUserOrThrowException(id);
+
+            if (user is null)
+            {
+                smartNotification.NewNotificationConflict("Usuário não encontrado.");
+                return default!;
+            }
 
             var existUserEmail = await userRepository.FindByEmail(record.Email);
 
             if (existUserEmail != null && !string.Equals(user.Email, record.Email, StringComparison.InvariantCultureIgnoreCase))
-                throw new RuleViolationException("O e-mail já está em uso.");
+            {
+                smartNotification.NewNotificationConflict("O e-mail já está em uso.");
+                return default!;
+            }
 
             record.Password = BCrypt.Net.BCrypt.HashPassword(record.Password);
             
@@ -80,9 +102,9 @@ namespace Manager.Service
             return mapper.Map<UserDTO>(user);
         }
 
-        private async Task<User> GetUserOrThrowException(int id)
+        private async Task<User?> GetUserOrThrowException(int id)
         {
-            return await userRepository.GetAsync(id) ?? throw new RuleViolationException("O usuário não existe.");
+            return await userRepository.GetAsync(id);
         }
     }
 }

@@ -1,11 +1,8 @@
 
 using System.Net;
-using System.Reflection.Metadata;
 using FluentValidation;
 using Manager.API.Utilities;
 using Manager.Domain.Validators;
-using Manager.Service.Exceptions;
-
 namespace Manager.API.Middlewares
 {
     public class GlobalExceptionHandler : IMiddleware
@@ -24,13 +21,8 @@ namespace Manager.API.Middlewares
             {
                 await ExceptionHandler(context, "Erro de validação", exception.Errors.Select(x => x.ErrorMessage));
             }
-            catch (RuleViolationException exception)
-            {
-                await ExceptionHandler(context, exception.Message, null);
-            }
-            catch (Exception exception)
+            catch 
             {   
-                Console.WriteLine(exception.Message);
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsJsonAsync(
                     new Responses.Result()

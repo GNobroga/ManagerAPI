@@ -1,7 +1,5 @@
 # Manager API
 
-É uma simples API
-
 ## Tecnologias utilizadas
 
 - Mediator
@@ -13,3 +11,5 @@
 - API Versioning 
 
 - Entity Framework
+
+- Notification

@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Text;
 using Asp.Versioning;
 using Manager.API.Middlewares;
@@ -21,7 +20,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
         var tokenConfiguration = new TokenConfiguration();
         builder.Configuration.GetSection("Jwt").Bind(tokenConfiguration);
-
         options.TokenValidationParameters = new()
         {   
             ValidateAudience = false,

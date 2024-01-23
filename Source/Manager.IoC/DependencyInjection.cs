@@ -12,6 +12,7 @@ using Manager.Domain.Interfaces;
 using Manager.Infrastructure.Context;
 using Manager.Infrastructure.Repositories;
 using Manager.Service;
+using Marraia.Notifications.Configurations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -60,6 +61,11 @@ namespace Manager.IoC
                 options.RegisterServicesFromAssembly(Assembly.Load("Manager.API"));
             });
             #endregion
+
+            #region Notification
+            services.AddSmartNotification();
+            #endregion
+
             return services;
         }
 
