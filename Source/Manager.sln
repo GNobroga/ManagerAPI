@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manager.Application", "Mana
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manager.API", "Manager.API\Manager.API.csproj", "{F1630585-594E-431C-9488-277D24C23EEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manager.Tests", "Manager.Tests\Manager.Tests.csproj", "{713DCAF8-C2F7-4D78-AE3C-F6874E14F085}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{F1630585-594E-431C-9488-277D24C23EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1630585-594E-431C-9488-277D24C23EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1630585-594E-431C-9488-277D24C23EEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{713DCAF8-C2F7-4D78-AE3C-F6874E14F085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{713DCAF8-C2F7-4D78-AE3C-F6874E14F085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{713DCAF8-C2F7-4D78-AE3C-F6874E14F085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{713DCAF8-C2F7-4D78-AE3C-F6874E14F085}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
