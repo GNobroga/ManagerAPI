@@ -1,4 +1,5 @@
 
+using Asp.Versioning;
 using Manager.Application.Users.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Manager.API.Controllers
 {   
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version=apiVersion}/[controller]")]
     public class AuthController(IMediator mediator) : ControllerBase
     {
 

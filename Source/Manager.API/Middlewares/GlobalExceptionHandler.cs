@@ -28,8 +28,9 @@ namespace Manager.API.Middlewares
             {
                 await ExceptionHandler(context, exception.Message, null);
             }
-            catch 
+            catch (Exception exception)
             {   
+                Console.WriteLine(exception.Message);
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsJsonAsync(
                     new Responses.Result()
